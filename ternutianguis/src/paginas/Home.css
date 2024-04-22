@@ -20,3 +20,16 @@
     color:mediumpurple;
     align-self: center;
 }
+
+.auth-inner {
+    display: flex;
+    align-items: flex-start; 
+}
+
+.contenido-izquierda {
+    margin-right: 20px;
+}
+
+.contenido-derecha {
+    overflow: hidden;
+}
