@@ -1,17 +1,20 @@
 import './App.css';
-import { BrowserRouter as Router, Routes,Route,Link} from 'react-router-dom';
+import { BrowserRouter as Router, Routes,Route,Link,Switch} from 'react-router-dom';
 import { Login } from './paginas/Login';
 import { Home } from './paginas/Home';
+import { Inicio } from './paginas/Inicio';
+import { Control } from './paginas/Control';
 import { Container}  from 'react-bootstrap';
 import { Nav } from 'react-bootstrap';
 import { Navbar } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+
 function App() {
   return (
     <div className="App">
       <Router>
-        <Navbar bg="light" data-bs-theme="light">
+      <Navbar bg="light" data-bs-theme="light">
           <Container>
             <Nav className="me-auto">
               <Nav.Link href="/">Home</Nav.Link>
@@ -23,6 +26,7 @@ function App() {
         <Routes>
           <Route path= "/" element={<Home />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/inicio" element={<Inicio />} />
           <Route path="*" element={<h1>404 Not Found</h1>} />
         </Routes>
       </Router>
