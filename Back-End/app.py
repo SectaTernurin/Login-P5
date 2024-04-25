@@ -1,15 +1,19 @@
 from flask import Flask, redirect, render_template, url_for, request, flash, session
-
+from alchemyClasses import db
+from alchemyClasses.Comprador import Comprador
 from controller.catalogue import catalogue
+from model.model_comprador import get_compradores
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://adminTernu:TernuTianguis.Admin2024@localhost:3306/TernuTianguis'
 app.register_blueprint(catalogue)
 app.config['SECRET_KEY'] = 'dev'
 
+db.init_app(app)
 
 @app.route('/')
 def hello_world():
-    return redirect(url_for('login'))
+    return get_compradores()
 
 
 @app.route('/login', methods=['GET', 'POST'])
