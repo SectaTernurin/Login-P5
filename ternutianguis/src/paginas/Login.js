@@ -8,8 +8,14 @@ import Image from 'react-bootstrap/Image';
 //import { Link } from 'react-router-dom';
 //import { withRouter } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
+import { withCookies, Cookies } from 'react-cookie'; // Importamos las cookies
+import { instanceOf } from 'prop-types'; // Para asegurar que las cookies son instancias correctas
 
 export class Login extends Component {
+  static propTypes = {
+    cookies: instanceOf(Cookies).isRequired // Aseguramos que las cookies son pasadas correctamente
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -29,6 +35,7 @@ export class Login extends Component {
   handleSubmit = async event => {
     event.preventDefault();
     const { email, password } = this.state;
+    const { cookies } = this.props; // Acceder a las cookies desde props
 
     if (email && password) {
       try {
@@ -44,6 +51,7 @@ export class Login extends Component {
 
         if (data.usuario) {
           // Usuario valido
+          cookies.set('authToken', data.token, { path: '/' }); // Guardar el token en las cookies
           window.location.href = '/inicio';
         } else {
           if (data.errorC === 'Contrasena incorrecta') {
@@ -101,3 +109,5 @@ export class Login extends Component {
     );
   }
 }
+
+export default withCookies(Login); // Envolver el componente con withCookies
