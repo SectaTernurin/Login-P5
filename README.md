@@ -54,7 +54,7 @@ En una terminal diferente a la que este corriendo el servidor flask, dirigase al
   
 Este comando puede tardar un poco. Una vez termine escriba el siguiente comando:
 
-npi start 
+npm start 
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Usuario valido 
