@@ -14,8 +14,9 @@
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
   },
-  "scripts": {
+  "scripts": { 
     "start": "react-scripts start",
+    "start-flask-app": "cd .. && source venv/bin/activate && cd Back-End && flask run",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -37,5 +38,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  
+  "proxy": "http://127.0.0.1:5000"
+
 }
