@@ -1,15 +1,12 @@
 import React, { Component } from 'react';
 import './Login.css';
-import { Inicio } from './Inicio';
+import Cookies from 'js-cookie'; // Importamos Cookies de js-cookie
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Image from 'react-bootstrap/Image';
-//import { Link } from 'react-router-dom';
-//import { withRouter } from 'react-router-dom';
-import { useHistory } from 'react-router-dom';
 
-export class Login extends Component {
+export default class Login extends Component { // Exportamos por defecto aquí
   constructor(props) {
     super(props);
     this.state = {
@@ -43,25 +40,25 @@ export class Login extends Component {
         const data = await response.json();
 
         if (data.usuario) {
-          // Usuario valido
+          // Usuario valido, guardamos el token en las cookies
+          Cookies.set('authToken', data.token, { path: '/' });
           window.location.href = '/inicio';
         } else {
           if (data.errorC === 'Contrasena incorrecta') {
-            // Contraseña incorrecta
             this.setState({ mensaje: 'La contraseña ingresada es incorrecta.' });
           } else {
-            // Usuario no encontrado
             this.setState({ mensaje: 'Usuario no encontrado.' });
           }
         }
       } catch (error) {
-        console.error('Error al iniciar sesion:', error);
-        this.setState({ mensaje: 'Error al iniciar sesion. Vuelva a intentarlo' });
+        console.error('Error al iniciar sesión:', error);
+        this.setState({ mensaje: 'Error al iniciar sesión. Vuelva a intentarlo' });
       }
     } else {
       alert('Por favor complete todos los campos.');
     }
   }
+
 
   render() {
     return (
