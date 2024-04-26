@@ -9,7 +9,7 @@ import Image from 'react-bootstrap/Image';
 //import { withRouter } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 
-export class Login extends Component {
+export class  Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -25,14 +25,32 @@ export class Login extends Component {
     });
   }
 
-  handleSubmit = event => {
+  handleSubmit = async event => {
     event.preventDefault();
     const { email, password } = this.state;
     if (email && password) {
-      window.location.href = '/inicio';
+
+      // Aqui se hace la conexión con el servidor
+      const response = await fetch('/loginVerificar',{
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({correo: email, contrasena: password}),
+      });
+      const data = await response.json();
+      console.log(data);
+
+      //window.location.href = '/inicio';
     } else {
       alert('Por favor complete todos los campos.');
     }
+
+    /**
+     * Aqui se va a hacer la petición al servidor
+     */
+
+
   }
 
   render() {
