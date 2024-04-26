@@ -9,12 +9,13 @@ import Image from 'react-bootstrap/Image';
 //import { withRouter } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 
-export class  Login extends Component {
+export class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
       email: '',
-      password: ''
+      password: '',
+      mensaje: ''
     };
   }
 
@@ -28,38 +29,48 @@ export class  Login extends Component {
   handleSubmit = async event => {
     event.preventDefault();
     const { email, password } = this.state;
+
     if (email && password) {
+      try {
+        const response = await fetch('/loginVerificar', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ correo: email, contrasena: password }),
+        });
 
-      // Aqui se hace la conexión con el servidor
-      const response = await fetch('/loginVerificar',{
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({correo: email, contrasena: password}),
-      });
-      const data = await response.json();
-      console.log(data);
+        const data = await response.json();
 
-      //window.location.href = '/inicio';
+        if (data.usuario) {
+          // Usuario valido
+          window.location.href = '/inicio';
+        } else {
+          if (data.errorC === 'Contrasena incorrecta') {
+            // Contraseña incorrecta
+            this.setState({ mensaje: 'La contraseña ingresada es incorrecta.' });
+          } else {
+            // Usuario no encontrado
+            this.setState({ mensaje: 'Usuario no encontrado.' });
+          }
+        }
+      } catch (error) {
+        console.error('Error al iniciar sesion:', error);
+        this.setState({ mensaje: 'Error al iniciar sesion. Vuelva a intentarlo' });
+      }
     } else {
       alert('Por favor complete todos los campos.');
     }
-
-    /**
-     * Aqui se va a hacer la petición al servidor
-     */
-
-
   }
 
   render() {
     return (
-      <div class="auth-inner form-border">
+      <div className="auth-inner form-border">
         <form onSubmit={this.handleSubmit}>
           <h3>Log In</h3>
+          {this.state.mensaje && <p>{this.state.mensaje}</p>}
           <div className="mb-3">
-            <label>Usuario</label>
+            <label>Correo</label>
             <input
               type="email"
               className="form-control"
@@ -80,28 +91,13 @@ export class  Login extends Component {
               placeholder="Ingrese su contraseña"
             />
           </div>
-          <div className="mb-3">
-            <div className="custom-control custom-checkbox">
-              <input
-                type="checkbox"
-                className="custom-control-input"
-                id="customCheck1"
-              />
-              <label className="custom-control-label" htmlFor="customCheck1">
-                Recuerdame
-              </label>
-            </div>
-          </div>
           <div className="d-grid">
             <button type="submit" className="btn btn-primary">
               Ingresar
             </button>
           </div>
-          <p className="forgot-password text-right">
-            <a href="#">¿Olvidaste tu contraseña?</a>
-          </p>
         </form>
       </div>
-    )
+    );
   }
 }
