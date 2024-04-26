@@ -5,7 +5,9 @@ comprador_controller = Blueprint('comprador_controller', __name__, template_fold
 
 @comprador_controller.route('/', methods=['GET', 'POST'])
 
-def hello():
-    return 'Hello, World!'
+@comprador_controller.route('/compradores', methods=['GET', 'POST'])
+def compradores():
+    compradores = model_compradores.get_compradores()
+    return render_template('compradores.html', compradores=compradores)
 
 

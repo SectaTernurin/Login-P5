@@ -2,7 +2,7 @@ from flask import Flask, redirect, render_template, url_for, request, flash, ses
 from alchemyClasses import db
 from alchemyClasses.Comprador import Comprador
 from controller.catalogue import catalogue
-from model.model_comprador import get_compradores
+from model.model_comprador import get_log_In
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://adminTernu:TernuTianguis.Admin2024@localhost:3306/TernuTianguis'
@@ -13,7 +13,7 @@ db.init_app(app)
 
 @app.route('/')
 def hello_world():
-    return get_compradores()
+    return redirect(url_for('login'))
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -24,7 +24,8 @@ def login():
         return render_template('index.html')
     name = request.form.get('username')
     passwd = request.form.get('password')
-    if name == 'ferfong' and passwd == 'Developer123!': #Ustedes van a tener que cambiar esto, por una validación con la DB.
+    comprador = get_log_In(name, passwd)
+    if comprador != None:
         session['user_id'] = name #definición de cookie de sesión.
         return render_template('login.html', user=name)
     flash('Invalid username or password')
