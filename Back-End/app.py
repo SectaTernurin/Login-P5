@@ -15,10 +15,17 @@ db.init_app(app)
 def loginVerificar():
     correo = request.json['correo']
     contrasena = request.json['contrasena']
-    comprador = get_log_In(correo, contrasena)
+    resultado = get_log_In(correo, contrasena)
+    comprador = resultado[0]
+    error = resultado[1]
+    print(comprador)
     if comprador == None:
         return {
             "error": "Usuario no encontrado"
+        }
+    if error :
+        return {
+            "errorC": "Contrasena incorrecta"
         }
     return {
         "usuario": comprador.usuario
